@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#div1 { width:100px; height:100px; background:red; position:absolute; top:50px; left:30px; }
+		</style>
+	</head>
+	<body>
+		<input id="btn1" type="button" value="走" />
+		<div id="div1"></div>
+		<script type="text/javascript">
+			var oBtn1 = document.getElementById('btn1');
+			var oDiv = document.getElementById('div1');
+			 
+			 //回调函数指的是当第一个动作执行完毕后继续要执行的函数
+			 oBtn1.onclick=function(){
+			 	doMove(oDiv,'left',20,500,function(){
+			 		doMove(oDiv,'top',20,300)
+			 	})
+			 }
+			
+			//运动对象，操作元素，每次增加量，目的地，回调函数
+			function doMove(obj,attr,dir,target,endfn){
+				//确定运动方向即确定dir的正负值
+				//当初始值小于目的地的值时，说明运动对象是要向前运动的，所以dir为正值
+				dir=parseInt(getComputedStyle(obj)[attr])<target?dir:-dir;
+				//清除定时器
+				clearInterval(obj.timer);
+				//设置定时器
+				obj.timer=setInterval(function(){
+					//获取元素初始值
+					var seep=parseFloat(getComputedStyle(obj)[attr])+dir;
+					//限定运动距离
+					if(seep<target&&dir<0||seep>target&&dir>0){
+						seep=target;
+					}
+					//改变操作元素的值
+					obj.style[attr]=seep+'px';
+					//到达目标点清除定时器
+					if(seep==target){
+						clearInterval(obj.timer);
+						//判断是否有回调函数,如果存在第一个条件就为真，就会走第二个条件
+						endfn&&endfn()
+					}
+				},30)
+				
+			}
+		</script>
+	</body>
+</html>

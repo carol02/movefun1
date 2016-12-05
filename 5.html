@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box{
+				width: 100px;
+				height: 100px;
+				background: red;
+				position: absolute;
+				top: 50px;
+				left: 10px;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var btn1=document.getElementById('btn1');
+				var btn2=document.getElementById('btn2');
+				var box=document.getElementById('box');
+				
+				//点击向前运动
+				btn1.onclick=function(){
+					/*clearInterval(box.timer);
+					box.timer=setInterval(function(){
+						//获取box的left值
+						var start=parseFloat(getComputedStyle(box).left);
+						if(start>800){
+							start=800;
+						}
+						box.style.left=start+19+'px';
+						
+						//当到达800时停止运动  
+						if(start==800){
+							clearInterval(box.timer);
+						}
+					},200)*/
+					doMove(box,'left',19,800);
+				}
+				
+				//点击向后运动
+				btn2.onclick=function(){
+					/*clearInterval(box.timer);
+					box.timer=setInterval(function(){
+						//获取box的left值
+						var start=parseFloat(getComputedStyle(box).left);
+						if(start<10){
+							start=10;
+						}
+						box.style.left=start+-19+'px';
+						
+						//当到达800时停止运动  
+						if(start==10){
+							clearInterval(box.timer);
+						}
+					},200)*/
+					
+					doMove(box,'left',19,10)
+				}
+				
+				function doMove(obj,attr,dir,target){
+					dir=parseFloat(getComputedStyle(obj)[attr])<target?dir:-dir;
+					clearInterval(obj.timer);
+					obj.timer=setInterval(function(){
+						//获取box的left值
+						var start=parseFloat(getComputedStyle(obj)[attr])+dir;
+						if(start<target&&dir<0){//向后运动
+							start=target;
+						}
+						if(start>target&&dir>0){//向后运动
+							start=target;
+						}
+						obj.style[attr]=start+'px';
+						
+						if(start==target){
+							clearInterval(obj.timer);
+						}
+					},30)
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="button" value="点击向前移动" id="btn1"/>
+		<input type="button" value="点击向后移动"  id="btn2"/>
+		<div id="box"></div>
+	</body>
+</html>

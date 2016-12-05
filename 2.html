@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			img{
+				opacity: .4;
+				filter: alpha(opacity=30);
+				margin-left: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<img src="img1/12.jpg"/>
+		<script type="text/javascript">
+			var pic=document.getElementsByTagName('img')[0];
+			
+			pic.onmouseover=function(){
+				startMove(this,'opacity',10,100)
+			}
+			
+			pic.onmouseout=function(){
+				//alert(1);
+				startMove(this,'opacity',-10,30)
+			}
+			
+			function startMove(obj,attr,speed,target){
+				clearInterval(obj.timer);
+				var opc=0;
+				obj.timer=setInterval(function(){
+					
+					if(attr=='opacity'){
+						opc=Math.round(css(pic,'opacity')*100)+speed;
+					}else{
+						opc=parseInt(css(obj,attr))+speed;
+					}
+					
+					if(opc==target){
+						clearInterval(obj.timer);
+					}else{
+						if(attr=='opacity'){
+							obj.style.opacity=opc/100;
+							obj.style.filter='alpha(opacity='+opc+')';
+						}else{
+							obj.style[attr]=opc+'px';
+						}
+					}
+				},50)
+			}
+			
+			function css(obj,attr){
+				if(obj.currentStyle){
+					return obj.currentStyle[attr];
+				}else{
+					return getComputedStyle(obj,false)[attr];
+				}
+			}
+		</script>
+	</body>
+</html>

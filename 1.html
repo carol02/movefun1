@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div{
+				width: 100px;
+				height: 100px;
+				background: red;
+				margin: 0 auto;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var divs=document.getElementsByTagName('div')[0];
+				
+				divs.onclick=function(){
+					startMove(this,{
+						width:200,
+						height:300
+					},10)
+				}
+				
+				function startMove(obj,json,speed){
+					clearInterval(obj.timer);
+					var opc=0;
+					obj.timer=setInterval(function(){
+						
+						var iBtn=true;
+						
+						for (var attr in json) {
+							//目标点等于json的值
+							var target=json[attr];
+							if(attr=='opacity'){
+								opc=Math.round(css(pic,'opacity')*100)+speed;
+							}else{
+								opc=parseInt(css(obj,attr))+speed;
+							}
+							
+							//有一个值不到目标点时让它变为假
+							if(opc!=target){
+								iBtn=false;
+								if(attr=='opacity'){
+									obj.style.opacity=opc/100;
+									obj.style.filter='alpha(opacity='+opc+')';
+								}else{
+									obj.style[attr]=opc+'px';
+								}
+							}
+						}
+						//当所有的值都到目标点时清除定时器
+						if(iBtn){
+							clearInterval(obj.timer);
+						}
+					},50)
+				}
+				
+				function css(obj,attr){
+					if(obj.currentStyle){
+						return obj.currentStyle[attr];
+					}else{
+						return getComputedStyle(obj,false)[attr];
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div></div>
+	</body>
+</html>
